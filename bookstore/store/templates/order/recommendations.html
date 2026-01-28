@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Recommended Books - {{ block.super }}{% endblock %}
+
+{% block content %}
+<h1>Recommended For You</h1>
+
+<p>Based on your purchase history and preferences:</p>
+
+{% if recommended_books %}
+    <div class="row">
+        {% for book in recommended_books %}
+        <div class="col-md-3 mb-4">
+            <div class="card book-card h-100">
+                <div class="card-body">
+                    <h6 class="card-title">{{ book.title }}</h6>
+                    <p class="card-text">
+                        <small>by {{ book.author.name }}</small><br>
+                        <strong>${{ book.price }}</strong>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'book:detail' book.id %}" class="btn btn-primary btn-sm">Details</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'order:add_to_cart' book.id %}" class="btn btn-success btn-sm">Add to Cart</a>
+                    {% else %}
+                        <a href="{% url 'customer:login' %}" class="btn btn-success btn-sm">Add to Cart</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>We don't have enough information to recommend books for you yet. Try browsing our collection!</p>
+    <a href="{% url 'book:index' %}" class="btn btn-primary">Browse Books</a>
+{% endif %}
+{% endblock %}

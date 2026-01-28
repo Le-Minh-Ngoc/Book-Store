@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Inventory - {{ block.super }}{% endblock %}
+
+{% block content %}
+<h1>Book Inventory</h1>
+
+<a href="{% url 'staff:add_book' %}" class="btn btn-primary mb-3">Add New Book</a>
+
+{% if books %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Price</th>
+                    <th>In Stock</th>
+                    <th>Category</th>
+                    <th>Publisher</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author.name }}</td>
+                    <td>${{ book.price }}</td>
+                    <td>{{ book.instock }}</td>
+                    <td>{{ book.category.type }}</td>
+                    <td>{{ book.publisher.name }}</td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p>No books in inventory.</p>
+{% endif %}
+{% endblock %}
